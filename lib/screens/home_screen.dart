@@ -19,7 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Start audio when entering the home screen
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.startAudio();
     });
@@ -27,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    // Stop audio when leaving the home screen
     controller.stopAudio();
     super.dispose();
   }
@@ -36,6 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.black,
+      extendBody: true,
       appBar: const TopBarWidget(),
       body: Obx(() {
         return PageView.builder(

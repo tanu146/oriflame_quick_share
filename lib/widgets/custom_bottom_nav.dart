@@ -8,32 +8,40 @@ class CustomBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
     final String currentRoute = Get.currentRoute;
+    bool isHome = currentRoute == AppRoutes.home || currentRoute == AppRoutes.smartPost;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      height: 70,
+      height: 80,
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xff1A1A1A) : AppColors.black,
-        border: Border(top: BorderSide(
-          color: isDark ? Colors.white10 : Colors.white12, 
-          width: 0.5
-        )),
+        // Transparent on home (Reels) to be immersive, solid elsewhere for visibility
+        color: isHome ? Colors.transparent : (isDark ? AppColors.darkBackground : Colors.white),
+        border: isHome 
+            ? null 
+            : Border(top: BorderSide(color: isDark ? Colors.white10 : Colors.black12, width: 0.5)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(Icons.rocket_launch_outlined, currentRoute == AppRoutes.smartPost, () => Get.offAllNamed(AppRoutes.home)),
-          _buildNavItem(Icons.search, currentRoute == AppRoutes.search, () => Get.offAllNamed(AppRoutes.search)),
-          _buildNavItem(Icons.home, currentRoute == AppRoutes.home, () => Get.offAllNamed(AppRoutes.home)),
-          _buildNavItem(Icons.chat_bubble_outline, currentRoute == AppRoutes.communities, () => Get.offAllNamed(AppRoutes.communities)),
-          _buildNavItem(Icons.person_outline, currentRoute == AppRoutes.profile, () => Get.offAllNamed(AppRoutes.profile)),
+          _buildNavItem(Icons.rocket_launch_outlined, currentRoute == AppRoutes.smartPost, () => Get.offAllNamed(AppRoutes.home), isHome),
+          _buildNavItem(Icons.search, currentRoute == AppRoutes.search, () => Get.offAllNamed(AppRoutes.search), isHome),
+          _buildNavItem(Icons.home_outlined, currentRoute == AppRoutes.home, () => Get.offAllNamed(AppRoutes.home), isHome),
+          _buildNavItem(Icons.chat_bubble_outline, currentRoute == AppRoutes.communities, () => Get.offAllNamed(AppRoutes.communities), isHome),
+          _buildNavItem(Icons.person_outline, currentRoute == AppRoutes.profile, () => Get.offAllNamed(AppRoutes.profile), isHome),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, bool isActive, VoidCallback onTap) {
+  Widget _buildNavItem(IconData icon, bool isActive, VoidCallback onTap, bool isHome) {
+    Color iconColor;
+    if (isHome) {
+      iconColor = isActive ? Colors.white : Colors.white.withOpacity(0.7);
+    } else {
+      iconColor = isActive ? AppColors.accent : AppColors.grey;
+    }
+
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -43,7 +51,7 @@ class CustomBottomNav extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: isActive ? Colors.white : Colors.white60,
+            color: iconColor,
             size: 28,
           ),
           if (isActive)
@@ -51,8 +59,8 @@ class CustomBottomNav extends StatelessWidget {
               margin: const EdgeInsets.only(top: 4),
               width: 4,
               height: 4,
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: iconColor,
                 shape: BoxShape.circle,
               ),
             )
