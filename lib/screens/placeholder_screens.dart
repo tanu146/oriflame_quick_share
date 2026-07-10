@@ -43,19 +43,21 @@ class SearchScreen extends StatelessWidget {
                 mainAxisSpacing: 2,
                 childAspectRatio: 0.8,
               ),
-              itemCount: controller.posts.length * 4, // Just for visual demo
+              itemCount: controller.posts.length,
               itemBuilder: (context, index) {
-                final postIndex = index % controller.posts.length;
-                final post = controller.posts[postIndex];
+                final post = controller.posts[index];
                 return GestureDetector(
                   onTap: () {
-                    controller.scrollToPost(postIndex);
+                    controller.scrollToPost(index);
                     Get.toNamed(AppRoutes.home);
                   },
-                  child: Image.network(
-                    post.imageUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  child: post.localAssetName != null 
+                    ? Image.asset(
+                        'assets/${post.localAssetName}',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => _buildNetworkImage(post.imageUrl),
+                      )
+                    : _buildNetworkImage(post.imageUrl),
                 );
               },
             ),
@@ -63,6 +65,30 @@ class SearchScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: const CustomBottomNav(),
+    );
+  }
+
+  Widget _buildNetworkImage(String url) {
+    return Image.network(
+      url,
+      fit: BoxFit.cover,
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Container(
+          color: Colors.black12,
+          child: const Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent),
+            ),
+          ),
+        );
+      },
+      errorBuilder: (context, error, stackTrace) => Container(
+        color: Colors.grey[300],
+        child: const Icon(Icons.image_outlined, color: Colors.white),
+      ),
     );
   }
 }
@@ -114,7 +140,16 @@ class LibraryScreen extends StatelessWidget {
             separatorBuilder: (_, __) => const SizedBox(width: 12),
             itemBuilder: (context, index) => ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.network(images[index], width: 120, fit: BoxFit.cover),
+              child: Image.network(
+                images[index], 
+                width: 120, 
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  width: 120,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.image_outlined),
+                ),
+              ),
             ),
           ),
         ),
@@ -172,7 +207,10 @@ class CommunityScreen extends StatelessWidget {
               itemCount: 10,
               separatorBuilder: (_, __) => const Divider(height: 1),
               itemBuilder: (context, index) => ListTile(
-                leading: CircleAvatar(backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=$index')),
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=$index'),
+                  backgroundColor: Colors.grey[200],
+                ),
                 title: Text("Beauty Tips Group #$index"),
                 subtitle: const Text("Recent activity: 2 mins ago"),
                 trailing: const Icon(Icons.chat_bubble_outline),

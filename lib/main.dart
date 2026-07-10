@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -11,10 +12,15 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
   
-  // Initialize HomeController globally so it's available to all screens
   Get.put(HomeController());
   
-  runApp(const QuickShareApp());
+  runApp(
+      // DevicePreview(
+      //   enabled: true,
+      //   builder: (context) => QuickShareApp(),
+      // ),
+      const QuickShareApp()
+  );
 }
 
 class QuickShareApp extends StatelessWidget {

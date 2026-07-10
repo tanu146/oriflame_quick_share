@@ -64,86 +64,96 @@ class _LandingScreenState extends State<LandingScreen> with SingleTickerProvider
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FadeTransition(
-                  opacity: _fadeAnimation,
-                  child: const Column(
+          SafeArea(
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'ORIFLAME',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 10,
+                      const SizedBox(height: 100),
+                      FadeTransition(
+                        opacity: _fadeAnimation,
+                        child: const Column(
+                          children: [
+                            Text(
+                              'ORIFLAME',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 10,
+                              ),
+                            ),
+                            Text(
+                              'SWEDEN',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: 12,
+                                letterSpacing: 6,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Text(
-                        'SWEDEN',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 12,
-                          letterSpacing: 6,
+                      const SizedBox(height: 24),
+                      SlideTransition(
+                        position: _slideAnimation,
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: const Text(
+                            'Empowering your business with\nsmart social sharing.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white60,
+                              fontSize: 16,
+                              height: 1.5,
+                            ),
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 60),
+                      SlideTransition(
+                        position: _slideAnimation,
+                        child: ElevatedButton(
+                          onPressed: () => Get.toNamed(AppRoutes.loading),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.accent,
+                            foregroundColor: AppColors.black,
+                            minimumSize: const Size(double.infinity, 60),
+                            elevation: 8,
+                            shadowColor: AppColors.accent.withOpacity(0.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'GET STARTED',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 2,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Icon(Icons.arrow_forward),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 48),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                SlideTransition(
-                  position: _slideAnimation,
-                  child: FadeTransition(
-                    opacity: _fadeAnimation,
-                    child: const Text(
-                      'Empowering your business with\nsmart social sharing.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white60,
-                        fontSize: 16,
-                        height: 1.5,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 60),
-                SlideTransition(
-                  position: _slideAnimation,
-                  child: ElevatedButton(
-                    onPressed: () => Get.toNamed(AppRoutes.loading),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.accent,
-                      foregroundColor: AppColors.black,
-                      minimumSize: const Size(double.infinity, 60),
-                      elevation: 8,
-                      shadowColor: AppColors.accent.withOpacity(0.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'GET STARTED',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Icon(Icons.arrow_forward),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 48),
-              ],
+              ),
             ),
           ),
         ],

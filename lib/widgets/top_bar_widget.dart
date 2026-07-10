@@ -20,24 +20,29 @@ class TopBarWidget extends StatelessWidget implements PreferredSizeWidget {
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Icon(Icons.radio_button_checked, 
-                color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.black, 
-                size: 28),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                decoration: BoxDecoration(
-                  color: AppColors.accent,
-                  borderRadius: BorderRadius.circular(4),
+          Image.asset(
+            'assets/app_icon.png',
+            width: 32,
+            height: 32,
+            errorBuilder: (context, error, stackTrace) => Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Icon(Icons.radio_button_checked, 
+                  color: Theme.of(context).brightness == Brightness.dark ? Colors.white : AppColors.black, 
+                  size: 28),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                  decoration: BoxDecoration(
+                    color: AppColors.accent,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text(
+                    "AI",
+                    style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
                 ),
-                child: const Text(
-                  "AI",
-                  style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
           const Text("Your Assistant", style: TextStyle(color: AppColors.grey, fontSize: 10)),
         ],

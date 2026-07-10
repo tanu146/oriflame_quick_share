@@ -1,41 +1,55 @@
-# Oriflame Quick Share Feature (Full Demo Implementation)
+# Oriflame Quick Share Feature - Flutter Assignment
 
-A comprehensive, high-fidelity Flutter implementation of the Oriflame Quick Share feature, showcasing complex UI, media handling, monetization, and seamless navigation.
+This project is a high-fidelity implementation of the Oriflame Quick Share feature. It translates the provided Figma designs into a production-inspired Flutter application.
 
-## 🚀 Key Deliverables & Enhancements
+## Key Features and Improvements
 
-### 🎨 Immersive Media Experience
-- **Reel UI with Synchronized Audio**: Vertical PageView with high-quality product images and unique recommended audio tracks that play/stop automatically as you scroll.
-- **Dynamic Content Overlay**: Collapsible `ProductInfoCard` that slides into view after 3 seconds, strategically placed above the profile row to maintain a clean layout.
-- **Visual Polishing**: Branded social asset icons, glassmorphism overlays, and smooth animations (fade-in, slide, scale).
+### 1. Immersive Media Experience
+The core of the app is a vertical scrolling reels interface. Each post is synchronized with a recommended audio track that plays and stops automatically as the user scrolls. I've also implemented a multi-layered image loading strategy that prioritizes local assets for speed, falls back to network URLs for flexibility, and finally shows a branded Oriflame placeholder if both fail.
 
-### 🛠 Fully Functional Navigation
-- **Top Tab Bar**: Active navigation across "Smart Post", "Library", "Communities", and "Share&Win".
-- **Bottom Navigation**: Fully responsive bottom bar with dedicated routes for "Search", "Home", and "Profile".
-- **Dynamic Profile Section**: A realistic "My Profile" screen with stats (Posts, Earnings, Points) and brand partner branding.
+### 2. Functional Navigation and Discovery
+The application features a complete navigation ecosystem. 
+- The search section provides a discovery grid where tapping a product thumbnail jumps the user directly to that specific post in the feed.
+- The library and community sections are fully designed to show categorized product assets and brand partner groups.
+- The profile section uses a modern SliverAppBar design to display partner stats and account options.
 
-### 🌗 Pro Dark Mode & Theming
-- **Instant Theme Switching**: Efficient GetX-based dark mode toggle in the top bar.
-- **Theme-Aware UI**: All components (loading steps, editor, profile) dynamically adapt their color palettes for perfect readability in both light and dark environments.
+### 3. Dynamic Theming
+A global dark mode toggle is integrated into the top bar. The entire application, from the landing sequence to the caption editor, adapts its color palette instantly. This ensures a premium user experience in any lighting environment.
 
-### ✍️ Advanced Editor & Flow
-- **High-Fidelity Caption Editor**: Professional interface with emoji-rich previews and visualized referral data.
-- **Smart Loading Flow**: An animated sequence that builds user trust by showing the intelligence behind the "Smart Post".
+### 4. Professional Editing Workflow
+The caption editor is built to match professional social media tools. It includes real-time change detection, clear visualization of referral links/codes, and a preview of the recommended Oriflame branding. 
 
-### 💰 Strategic Monetization
-- **AdMob Integration**: Demonstrates monetization potential via an **Interstitial Ad** that appears precisely once when the user interacts with the 3rd reel, following UX best practices.
+### 5. Optional Enhancement
+Integrated Google AdMob to demonstrate how monetization could be incorporated into a content-driven application without interrupting the primary workflow. An interstitial ad is programmed to appear exactly once when the user reaches the third reel, showing how monetization can be balanced with content engagement.
 
-## 🛠 Tech Stack
-- **Framework**: Flutter
-- **State/Theme/Routes**: GetX
-- **Media**: `audioplayers`
-- **Monetization**: `google_mobile_ads`
-- **Icons**: Branded PNG assets + Material/Cupertino Icons.
+### 6. Responsive and Robust Design
+The UI has been designed with responsiveness in mind using SafeArea, Flexible layouts, and relative sizing to provide a consistent experience across different screen sizes.
 
-## 🏃 Getting Started
-1. Run `flutter pub get`.
-2. Ensure you are on a device with internet access (for network images/audio).
-3. `flutter run`.
+## Technical Stack
+- Flutter Framework
+- GetX for state management, theming, and routing
+- Audioplayers for synchronized media playback
+- Google Mobile Ads for monetization
+- Google Fonts for consistent typography
 
----
-*Developed with attention to UI/UX details to stand out in the Oriflame application process.*
+## Getting Started
+1. Clone the repository.
+2. Run flutter pub get to install all dependencies (including GetX, Audioplayers, and Mobile Ads).
+3. Ensure the device has an active internet connection for media streaming and ad fetching.
+4. Execute flutter run on your preferred emulator or physical device.
+
+## Assumptions & Enhancements
+
+The provided Figma focused primarily on the Quick Share workflow. Some interactions and screens were intentionally open to interpretation, so I made a few product-oriented enhancements while preserving the intended user journey.
+
+Enhancements include:
+- Dark mode support
+- Audio-synchronized reel experience
+- Discovery/Search navigation
+- Community and Library sections
+- Responsive layouts
+- Smooth animations and transitions
+- Image loading fallbacks
+- Caption editing improvements
+
+These additions were made to demonstrate product thinking while remaining faithful to the original concept.

@@ -6,14 +6,34 @@ import '../widgets/top_bar_widget.dart';
 import '../widgets/custom_bottom_nav.dart';
 import '../core/constants/app_colors.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Controller is now global from main.dart
-    final HomeController controller = Get.find<HomeController>();
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  final HomeController controller = Get.find<HomeController>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Start audio when entering the home screen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.startAudio();
+    });
+  }
+
+  @override
+  void dispose() {
+    // Stop audio when leaving the home screen
+    controller.stopAudio();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.black,
       appBar: const TopBarWidget(),

@@ -19,6 +19,7 @@ class HomeController extends GetxController {
 
   final AudioPlayer _audioPlayer = AudioPlayer();
   var isPlaying = false.obs;
+  var isMuted = false.obs; // PERSISTENT MUTE STATE
 
   late PageController pageController;
 
@@ -31,16 +32,6 @@ class HomeController extends GetxController {
     _setupAudio();
   }
 
-  void scrollToPost(int index) {
-    currentIndex.value = index;
-    // We use a slight delay to ensure the PageView is built
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (pageController.hasClients) {
-        pageController.jumpToPage(index);
-      }
-    });
-  }
-
   void _setupAudio() {
     _audioPlayer.setReleaseMode(ReleaseMode.loop);
     _audioPlayer.onPlayerStateChanged.listen((state) {
@@ -50,13 +41,24 @@ class HomeController extends GetxController {
 
   void loadPosts() {
     posts.assignAll(DummyData.posts);
-    if (posts.isNotEmpty) {
-      _playAudioForIndex(0);
+  }
+
+  void startAudio() {
+    if (!isMuted.value) {
+      _playAudioForIndex(currentIndex.value);
     }
   }
 
+  void stopAudio() {
+    _audioPlayer.stop();
+  }
+
   void _playAudioForIndex(int index) async {
-    if (posts.isEmpty || index >= posts.length) return;
+    if (posts.isEmpty || index >= posts.length || isMuted.value) {
+      _audioPlayer.stop();
+      return;
+    }
+    
     String? url = posts[index].audioUrl;
     if (url != null) {
       try {
@@ -69,6 +71,40 @@ class HomeController extends GetxController {
     }
   }
 
+  void toggleAudio() {
+    isMuted.value = !isMuted.value;
+    if (isMuted.value) {
+      _audioPlayer.stop();
+    } else {
+      _playAudioForIndex(currentIndex.value);
+    }
+  }
+
+  void onPageChanged(int index) {
+    currentIndex.value = index;
+    if (!isMuted.value) {
+      _playAudioForIndex(index);
+    }
+    
+    if (index == 2 && !_hasAdBeenShown) {
+      if (_isAdLoaded) {
+        _showInterstitialAd();
+        _hasAdBeenShown = true;
+      } else {
+        _loadInterstitialAd(showAfterLoad: true);
+      }
+    }
+  }
+
+  void scrollToPost(int index) {
+    currentIndex.value = index;
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (pageController.hasClients) {
+        pageController.jumpToPage(index);
+      }
+    });
+  }
+
   void updateCaption(String id, String newCaption) {
     int index = posts.indexWhere((p) => p.id == id);
     if (index != -1) {
@@ -79,30 +115,6 @@ class HomeController extends GetxController {
   void toggleTheme() {
     isDarkMode.value = !isDarkMode.value;
     Get.changeThemeMode(isDarkMode.value ? ThemeMode.dark : ThemeMode.light);
-  }
-
-  void toggleAudio() {
-    if (isPlaying.value) {
-      _audioPlayer.pause();
-    } else {
-      _audioPlayer.resume();
-    }
-  }
-
-  void onPageChanged(int index) {
-    currentIndex.value = index;
-    _playAudioForIndex(index);
-    
-    // TRIGGER: Landed on 3rd reel
-    if (index == 2 && !_hasAdBeenShown) {
-      if (_isAdLoaded) {
-        _showInterstitialAd();
-        _hasAdBeenShown = true;
-      } else {
-        // Fallback: load and show if it becomes ready while on this page
-        _loadInterstitialAd(showAfterLoad: true);
-      }
-    }
   }
 
   void _loadInterstitialAd({bool showAfterLoad = false}) {

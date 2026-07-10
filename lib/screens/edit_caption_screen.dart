@@ -47,7 +47,10 @@ class _EditCaptionScreenState extends State<EditCaptionScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.close, color: isDark ? Colors.white : AppColors.black),
-          onPressed: () => Get.back(),
+          onPressed: () {
+            homeController.startAudio(); // Resume audio
+            Get.back();
+          },
         ),
         title: Text(
           "Edit Caption",
@@ -65,6 +68,7 @@ class _EditCaptionScreenState extends State<EditCaptionScreen> {
               onPressed: _hasChanges.value
                   ? () {
                       homeController.updateCaption(post.id, _controller.text);
+                      homeController.startAudio(); // Resume audio
                       Get.back();
                       Get.snackbar(
                         "Success",
@@ -110,11 +114,11 @@ class _EditCaptionScreenState extends State<EditCaptionScreen> {
                     ),
                     autofocus: true,
                   ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "💧 Keep your lips soft, plump, and perfectly hydrated all day! Our Hyaluronic Lip Balm is infused with moisture-locking ingredients to nourish, smooth, and add a natural, glossy finish. Say goodbye to dryness and hello to a luscious, healthy pout! 💋✨ #HydratedLips #PlumpAndGlow #LipCare",
-                    style: TextStyle(color: AppColors.grey, fontSize: 13, height: 1.5),
-                  ),
+                  // const SizedBox(height: 20),
+                  // const Text(
+                  //   "💧 Keep your lips soft, plump, and perfectly hydrated all day! Our Hyaluronic Lip Balm is infused with moisture-locking ingredients to nourish, smooth, and add a natural, glossy finish. Say goodbye to dryness and hello to a luscious, healthy pout! 💋✨ #HydratedLips #PlumpAndGlow #LipCare",
+                  //   style: TextStyle(color: AppColors.grey, fontSize: 13, height: 1.5),
+                  // ),
                   const SizedBox(height: 24),
                   _buildReferralDetail("Use my referral link", post.referralLink, isDark),
                   const SizedBox(height: 12),

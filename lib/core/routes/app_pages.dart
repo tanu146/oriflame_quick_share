@@ -35,7 +35,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.shareWin,
-      page: () => const LibraryScreen(), // Reusing library for visual demo
+      page: () => const LibraryScreen(),
     ),
     GetPage(
       name: AppRoutes.profile,
